@@ -25,7 +25,7 @@ $ DB_HOST=myhost.example.com node index.js
 *config.json*
 ```json
 {
-  "development" {
+  "development": {
     "port": 3000,
     "logPath": "logs/app.log",
     "db": {
