@@ -1,0 +1,23 @@
+{
+  "name": "node-enfig",
+  "version": "0.0.1",
+  "description": "Create environment variables from a configuration file",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/guzart/node-enfig.git"
+  },
+  "keywords": [
+    "environment",
+    "configuration"
+  ],
+  "author": "Arturo Guzman",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/guzart/node-enfig/issues"
+  },
+  "homepage": "https://github.com/guzart/node-enfig"
+}
