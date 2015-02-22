@@ -1,6 +1,6 @@
 # enfig *(for Node.js)*
 
-Create environment variables from a configuration file.
+Assign environment variables from a configuration file.
 
 * Enfig assumes that your configuration file is grouped by environment.
 * Enfig will generate an environment key from your configuration file based on the following rules:
