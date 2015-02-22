@@ -1,5 +1,5 @@
 {
-  "name": "node-enfig",
+  "name": "enfig",
   "version": "0.0.1",
   "description": "Create environment variables from a configuration file",
   "main": "index.js",
