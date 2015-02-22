@@ -13,7 +13,7 @@ Create environment variables from a configuration file.
 1. [Example](#example)
   * [Warning](#warning)
 1. [API](#api)
-  * [load(path, [options])](#load-path-options)
+  * [load(path, [options])](#enfigloadpath-options)
 
 ## Example
 
