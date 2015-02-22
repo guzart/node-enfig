@@ -57,16 +57,25 @@ function flattenForEnv(config) {
       Object.keys(innerEnvConfig).forEach(function (innerKey) {
         var innerValue = innerEnvConfig[innerKey];
         var innerEnvKey = envKey + '_' + upcase(innerKey);
-        var innerEnvValue = process.env[innerEnvKey];
-        envConfig[innerEnvKey] = innerEnvValue || innerValue;
+        envConfig[innerEnvKey] = innerValue;
       });
     } else {
-      var envValue = process.env[envKey];
-      envConfig[envKey] = envValue || value;
+      envConfig[envKey] = value;
     }
   });
 
   return envConfig;
+}
+
+function applyConfigToEnv(config) {
+  var appliedConfig = {};
+  Object.keys(config).forEach(function (key) {
+    var value = config[key];
+    var envValue = process.env[key];
+    process.env[key] = appliedConfig[key] = envValue || value;
+  });
+
+  return appliedConfig;
 }
 
 module.exports = {
@@ -78,6 +87,7 @@ module.exports = {
     }
 
     var envConfig = flattenForEnv(config);
-    return {config: config, env: envConfig};
+    var appliedConfig = applyConfigToEnv(envConfig);
+    return {config: config, env: envConfig, applied: appliedConfig};
   }
 };
