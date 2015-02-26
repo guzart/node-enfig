@@ -1,14 +1,59 @@
 
 var fs = require('fs');
+var path = require('path');
 var type = Function.prototype.call.bind(Object.prototype.toString);
 
-function getEnv(options) {
-  return (options || {}).env || process.env.NODE_ENV || 'development';
+
+function makeArray(args) {
+  var output = [];
+  for (var n in args) {
+    output.push(args[n]);
+  }
+
+  return output;
 }
+
 
 function isPlainObject(obj) {
   return type(obj) === '[object Object]';
 }
+
+
+function parseOptions(args) {
+  var argsArray = makeArray(args);
+  var opts = getOptions(argsArray);
+
+  return {
+    path: getPath(argsArray),
+    env: opts.env || process.env.NODE_ENV || 'development'
+  };
+}
+
+
+function getOptions(args) {
+  var output = {};
+  args.forEach(function (a) {
+    if (isPlainObject(a)) {
+      output = a;
+      return;
+    }
+  });
+
+  return output;
+}
+
+
+function getPath(args) {
+  var segments = [];
+  args.forEach(function (a) {
+    if (typeof a === 'string') {
+      segments.push(a);
+    }
+  });
+
+  return path.join.apply(path, segments);
+}
+
 
 function getConfig(path, env, callback) {
   var stat = fs.statSync(path);
@@ -78,16 +123,20 @@ function applyConfigToEnv(config) {
   return appliedConfig;
 }
 
-module.exports = {
-  load: function (path, options) {
-    var env = getEnv(options);
-    var config = getConfig(path, env);
-    if (!config) {
-      throw 'enfig: Could not find configuration for ' + env + ' at ' + path;
-    }
 
-    var envConfig = flattenForEnv(config);
-    var appliedConfig = applyConfigToEnv(envConfig);
-    return {config: config, env: envConfig, applied: appliedConfig};
+function load() {
+  var options = parseOptions(arguments);
+  var config = getConfig(options.path, options.env);
+
+  if (!config) {
+    throw 'enfig: Could not find configuration for ' + options.env + ' at ' + options.path;
   }
-};
+
+  var envConfig = flattenForEnv(config);
+  var appliedConfig = applyConfigToEnv(envConfig);
+
+  return {config: config, env: envConfig, applied: appliedConfig};
+}
+
+load.load = load;
+module.exports = load;
