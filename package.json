@@ -19,5 +19,8 @@
   "bugs": {
     "url": "https://github.com/guzart/node-enfig/issues"
   },
-  "homepage": "https://github.com/guzart/node-enfig"
+  "homepage": "https://github.com/guzart/node-enfig",
+  "dependencies": {
+    "js-yaml": "^3.5.3"
+  }
 }

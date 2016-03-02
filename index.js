@@ -4,23 +4,13 @@ var path = require('path');
 var type = Function.prototype.call.bind(Object.prototype.toString);
 
 
-function makeArray(args) {
-  var output = [];
-  for (var n in args) {
-    output.push(args[n]);
-  }
-
-  return output;
-}
-
-
 function isPlainObject(obj) {
   return type(obj) === '[object Object]';
 }
 
 
 function parseOptions(args) {
-  var argsArray = makeArray(args);
+  var argsArray = Array.prototype.slice.call(args);
   var opts = getOptions(argsArray);
 
   return {
@@ -55,15 +45,22 @@ function getPath(args) {
 }
 
 
-function getConfig(path, env, callback) {
-  var stat = fs.statSync(path);
+function getConfig(filepath, env, callback) {
+  var stat = fs.statSync(filepath);
   var exists = stat.isFile();
   if (!exists) {
     return null;
   }
 
-  var configFile = require(path);
-  return configFile[env];
+  var fileExtname = path.extname(filepath);
+  if (['.yaml', '.yml'].indexOf(fileExtname) !== -1) {
+    var yaml = require('js-yaml');
+    var yamlConfig = yaml.safeLoad(fs.readFileSync(filepath));
+    return yamlConfig[env];
+  } else {
+    var configFile = require(filepath);
+    return configFile[env];
+  }
 }
 
 function upcase(word) {
